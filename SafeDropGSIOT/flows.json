@@ -1,0 +1,224 @@
+[
+    {
+        "id": "35fb47f435ac10ac",
+        "type": "http in",
+        "z": "9dd3037c39982621",
+        "name": "GET Alertas",
+        "url": "/alertas",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 530,
+        "y": 280,
+        "wires": [
+            [
+                "9d32dc71e5c2a09d"
+            ]
+        ]
+    },
+    {
+        "id": "9d32dc71e5c2a09d",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Responder alertas",
+        "func": "const alertas = global.get('alertas') || [];\nmsg.payload = { sucesso: true, data: alertas };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 770,
+        "y": 280,
+        "wires": [
+            [
+                "ef3e200f11e8fcd9"
+            ]
+        ]
+    },
+    {
+        "id": "1645d60fc54859f3",
+        "type": "http in",
+        "z": "9dd3037c39982621",
+        "name": "DELETE alerta por ID",
+        "url": "/alertas/:id",
+        "method": "delete",
+        "upload": false,
+        "x": 530,
+        "y": 340,
+        "wires": [
+            [
+                "182f8ce82b334c22"
+            ]
+        ]
+    },
+    {
+        "id": "182f8ce82b334c22",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Remover alerta por ID",
+        "func": "const idParaRemover = msg.req.params.id;\nlet alertas = global.get('alertas') || [];\nconst index = alertas.findIndex(a => a.id === idParaRemover);\n\nif (index !== -1) {\n    alertas.splice(index, 1);\n    global.set('alertas', alertas);\n    msg.payload = { sucesso: true, mensagem: `Alerta ${idParaRemover} removido com sucesso.` };\n} else {\n    msg.statusCode = 404;\n    msg.payload = { sucesso: false, mensagem: 'Alerta não encontrado.' };\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 770,
+        "y": 340,
+        "wires": [
+            [
+                "ef3e200f11e8fcd9"
+            ]
+        ]
+    },
+    {
+        "id": "484ef24ba20ad048",
+        "type": "mqtt in",
+        "z": "9dd3037c39982621",
+        "name": "Nível de Água",
+        "topic": "SafeDrop/Enchente/Nivel",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 530,
+        "y": 380,
+        "wires": [
+            [
+                "39a73d40ce7b7db4"
+            ]
+        ]
+    },
+    {
+        "id": "39a73d40ce7b7db4",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Verificar enchente",
+        "func": "const nivel = msg.payload.nivel_agua;\nif (nivel > 80) {\n    const alerta = {\n        id: Date.now().toString(),\n        titulo: 'Alerta de Enchente',\n        descricao: `Nível de água elevado: ${nivel}%`,\n        prioridade: 'Alta',\n        data: new Date().toLocaleDateString('pt-BR'),\n        fonte: 'IoT'\n    };\n    let alertas = global.get('alertas') || [];\n    alertas.push(alerta);\n    global.set('alertas', alertas);\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "x": 790,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3e186c286c33e114",
+        "type": "mqtt in",
+        "z": "9dd3037c39982621",
+        "name": "Temperatura/Umidade",
+        "topic": "SafeDrop/TemperaturaUmidade",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 540,
+        "y": 440,
+        "wires": [
+            [
+                "a013861f2da49231"
+            ]
+        ]
+    },
+    {
+        "id": "a013861f2da49231",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Verificar Temp/Umid",
+        "func": "const { temperatura, umidade } = msg.payload;\nlet alertas = global.get('alertas') || [];\n\nif (temperatura > 35) {\n    const alerta = {\n        id: Date.now().toString(),\n        titulo: 'Alerta de Temperatura',\n        descricao: `Temperatura elevada: ${temperatura}°C`,\n        prioridade: 'Média',\n        data: new Date().toLocaleDateString('pt-BR'),\n        fonte: 'IoT'\n    };\n    alertas.push(alerta);\n}\n\nif (umidade > 90) {\n    const alerta = {\n        id: Date.now().toString(),\n        titulo: 'Alerta de Enchente',\n        descricao: `Umidade muito alta: ${umidade}%`,\n        prioridade: 'Alta',\n        data: new Date().toLocaleDateString('pt-BR'),\n        fonte: 'IoT'\n    };\n    alertas.push(alerta);\n}\n\nglobal.set('alertas', alertas);\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 800,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3915a5724ec4cc0e",
+        "type": "mqtt in",
+        "z": "9dd3037c39982621",
+        "name": "Vibração",
+        "topic": "SafeDrop/Vibracao",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 520,
+        "y": 500,
+        "wires": [
+            [
+                "0e626961992c3d00"
+            ]
+        ]
+    },
+    {
+        "id": "0e626961992c3d00",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Verificar Vibração",
+        "func": "const vibracao = msg.payload.vibracao;\nif (vibracao > 70) {\n    const alerta = {\n        id: Date.now().toString(),\n        titulo: 'Alerta de Vibração',\n        descricao: `Vibração anormal detectada: ${vibracao}%`,\n        prioridade: 'Alta',\n        data: new Date().toLocaleDateString('pt-BR'),\n        fonte: 'IoT'\n    };\n    let alertas = global.get('alertas') || [];\n    alertas.push(alerta);\n    global.set('alertas', alertas);\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "x": 790,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "82c5e097a9583d89",
+        "type": "mqtt in",
+        "z": "9dd3037c39982621",
+        "name": "Tremores",
+        "topic": "SafeDrop/Tremores",
+        "datatype": "json",
+        "broker": "mqtt_broker",
+        "inputs": 0,
+        "x": 520,
+        "y": 560,
+        "wires": [
+            [
+                "aa0d1ccc0483ecb4"
+            ]
+        ]
+    },
+    {
+        "id": "aa0d1ccc0483ecb4",
+        "type": "function",
+        "z": "9dd3037c39982621",
+        "name": "Verificar Tremores",
+        "func": "const tremor = msg.payload.tremor;\nif (tremor > 60) {\n    const alerta = {\n        id: Date.now().toString(),\n        titulo: 'Alerta de Tremor',\n        descricao: `Tremor significativo: ${tremor}%`,\n        prioridade: 'Alta',\n        data: new Date().toLocaleDateString('pt-BR'),\n        fonte: 'IoT'\n    };\n    let alertas = global.get('alertas') || [];\n    alertas.push(alerta);\n    global.set('alertas', alertas);\n}\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 790,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ef3e200f11e8fcd9",
+        "type": "http response",
+        "z": "9dd3037c39982621",
+        "name": "Resposta HTTP",
+        "statusCode": "",
+        "headers": {},
+        "x": 1040,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]
