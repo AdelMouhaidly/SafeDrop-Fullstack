@@ -215,10 +215,8 @@ const char* mqtt_server = "broker.hivemq.com";
 
 ##  Futuras Melhorias
 
-- [ ] Interface web para visualização de dados
 - [ ] Integração com serviços de meteorologia
 - [ ] Machine Learning para predição avançada
-- [ ] Aplicativo móvel para alertas
 - [ ] Integração com sistemas de emergência
 
 
