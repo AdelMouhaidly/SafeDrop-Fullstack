@@ -9,12 +9,8 @@
 ##  Sumário
 
 - [Descrição da Solução](#-descrição-da-solução)
-- [Arquitetura Técnica](#️-arquitetura-técnica)
-- [Funcionalidades](#-funcionalidades)
-- [Implementação](#-implementação)
-- [Configuração](#️-configuração)
-- [Testes](#-testes)
-- [Considerações](#-considerações)
+
+- [Guia de como rodar o projeto](#safedrop---backend-setup-guide)
 
 ##  Descrição da Solução
 
