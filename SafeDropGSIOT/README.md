@@ -2,9 +2,9 @@
 
 ##  Equipe
 
-- **Adel Mouhaidy** - RM 557705 - 1TDSA
-- **Afonso Correia Pereira** - RM 557863 - 1TDSA
-- **Tiago Augusto Desiderato Ferro** - RM 558485 - 1TDSA
+- **Adel Mouhaidy** - RM 557705 - 2TDSA
+- **Afonso Correia Pereira** - RM 557863 - 2TDSA
+- **Tiago Augusto Desiderato Ferro** - RM 558485 - 2TDSA
 
 ##  Sumário
 
