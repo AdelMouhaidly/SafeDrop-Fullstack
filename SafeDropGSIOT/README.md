@@ -14,6 +14,8 @@
 
 ##  Descrição da Solução
 
+![Desastres](./imagens/desastre.webp)
+
 ### Visão Geral
 
 O SafeDrop é um sistema IoT desenvolvido para monitoramento preventivo de desastres naturais, com foco especial em enchentes e eventos climáticos extremos. A solução combina sensores ambientais, processamento inteligente de dados e comunicação redundante para fornecer alertas antecipados e informações críticas para tomada de decisões.
@@ -35,6 +37,8 @@ O sistema foi projetado para ser uma ferramenta completa de prevenção, capaz d
 - **Melhoria do Planejamento**: Dados históricos para planejamento urbano
 
 ##  Arquitetura Técnica
+
+![Desastres](./imagens/arquitetura.jpg)
 
 ### Visão Geral da Arquitetura
 
@@ -66,6 +70,8 @@ O sistema é estruturado em três camadas:
 | **Display LCD I2C** | Interface Local | 16x2, comunicação I2C |
 
 ##  Funcionalidades
+
+![Desastres](./imagens/funcionalidades.jpg)
 
 ### Monitoramento Contínuo
 
